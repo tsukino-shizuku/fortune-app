@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>月と星の開運鑑定｜九星気学とタロットで導くメッセージ</title>
+    <meta name="description" content="九星気学とタロットで、今のあなたに必要なメッセージをやさしくお届けします。">
+    <!-- Favicon & PWA -->
+    <link rel="icon" type="image/png" href="./icon.png">
+    <link rel="apple-touch-icon" href="./icon.png">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#c49a4a">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Shippori+Mincho:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #fdfbf7;
+            --color-white: #ffffff;
+            --color-lavender: #f3e8ff;
+            --color-pink: #fce7f3;
+            --color-gold: #c5a059;
+            --color-gold-light: #e6d5b8;
+            --color-text: #4a4a4a;
+            --color-text-dark: #2d2d2d;
+            --color-accent: #8b5cf6;
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --border-gold: 1px solid #d4af3766;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png'); /* Subtle paper texture */
+        }
+
+        h1, h2, h3 {
+            font-family: 'Shippori Mincho', serif;
+            color: var(--color-text-dark);
+        }
+
+        /* Layout */
+        .app-container {
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--color-white);
+            box-shadow: 0 0 50px rgba(0,0,0,0.03);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .view {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Components */
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, var(--color-gold), #b38b4d);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+            font-family: 'Shippori Mincho', serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(197, 160, 89, 0.4);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: var(--border-gold);
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* --- 1. Top Screen --- */
+        .top-screen {
+            text-align: center;
+            padding-top: 60px;
+            background: radial-gradient(circle at top, var(--color-lavender) 0%, transparent 70%);
+        }
+
+        .logo-area {
+            margin-bottom: 40px;
+        }
+
+        .moon-icon {
+            font-size: 4rem;
+            color: var(--color-gold);
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px rgba(197, 160, 89, 0.4));
+        }
+
+        .app-title {
+            font-size: 2.2rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+        }
+
+        .app-subtitle {
+            font-size: 0.95rem;
+            color: var(--color-accent);
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .intro-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        /* --- 2. Input Screen --- */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--color-text-dark);
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            background: #fafafa;
+        }
+
+        /* --- 3. Loading Screen --- */
+        .loading-screen {
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            display: none;
+        }
+
+        .stars-loading {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+        }
+
+        .star-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--color-gold);
+            border-radius: 50%;
+            animation: starPulse 1.5s infinite;
+        }
+
+        @keyframes starPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* --- 4. Result Screen --- */
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .guide-box {
+            display: flex;
+            align-items: center;
+            background: var(--color-pink);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .guide-avatar {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border: 2px solid var(--color-gold-light);
+        }
+
+        .guide-msg {
+            font-size: 0.85rem;
+            color: var(--color-text-dark);
+        }
+
+        .result-item {
+            margin-bottom: 20px;
+        }
+
+        .result-label {
+            font-size: 0.8rem;
+            color: var(--color-gold);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .result-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'Shippori Mincho', serif;
+        }
+
+        .score-circle {
+            width: 100px;
+            height: 100px;
+            border: 4px solid var(--color-gold-light);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .score-num {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--color-gold);
+        }
+
+        .score-unit { font-size: 0.7rem; }
+
+        .tarot-card-display {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 15px;
+            margin: 15px 0;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+        }
+
+        .tarot-name {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 1.3rem;
+            margin: 10px 0;
+            color: var(--color-accent);
+        }
+
+        /* --- 5. Locked Area --- */
+        .locked-container {
+            position: relative;
+            margin-top: 40px;
+            padding-bottom: 100px;
+        }
+
+        .locked-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 20%, rgba(255,255,255,1) 100%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 60px;
+        }
+
+        .lock-icon {
+            font-size: 3rem;
+            color: var(--color-gold);
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+
+        .locked-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--color-text-dark);
+        }
+
+        /* --- 6. LINE CTA --- */
+        .line-cta-box {
+            background: #fff;
+            border: 2px solid var(--color-gold);
+            border-radius: 24px;
+            padding: 30px 20px;
+            text-align: center;
+            margin-top: -50px;
+            position: relative;
+            z-index: 20;
+            box-shadow: 0 15px 40px rgba(197, 160, 89, 0.2);
+        }
+
+        .benefit-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .benefit-card {
+            background: var(--color-bg);
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid var(--color-gold-light);
+            text-align: left;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+            color: var(--color-gold);
+        }
+
+        .benefit-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .benefit-desc {
+            font-size: 0.75rem;
+            color: #777;
+        }
+
+        .line-btn {
+            background: linear-gradient(135deg, var(--color-gold), #b38b4d);
+            color: white;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 0.7rem;
+            color: #999;
+        }
+
+        .text-link {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: var(--color-gold);
+            text-decoration: underline;
+            cursor: pointer;
+            margin-top: 10px;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .settings-area {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            border-top: 1px dashed var(--color-gold-light);
+        }
+
+        .hidden { display: none !important; }
+
+        .btn-outline {
+            background: white;
+            color: var(--color-gold);
+            border: 1px solid var(--color-gold);
+            box-shadow: none;
+        }
+        .btn-outline:hover {
+            background: var(--color-ecru);
+        }
+
+        /* Responsive */
+        @media (max-width: 400px) {
+            .app-title { font-size: 1.8rem; }
+            .card { padding: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- View: Top -->
+    <section id="view-top" class="view active top-screen">
+        <div class="logo-area">
+            <div class="moon-icon">🌙</div>
+            <h1 class="app-title">月と星の開運鑑定</h1>
+            <p class="app-subtitle">九星気学とタロットで、<br>今のあなたに必要なメッセージを</p>
+        </div>
+        <div class="card" style="margin: 0 20px;">
+            <p class="intro-text">
+                生まれ持った本質と、今日の流れを読み解き、今のあなたに合う開運アクションをお届けします。<br><br>
+                <span style="color: var(--color-gold); font-weight: 600;">無料で、あなたの本質と今日のメッセージを簡単に鑑定できます。</span>
+            </p>
+            <button class="btn" onclick="navigateTo('view-input')">無料で鑑定する</button>
+        </div>
+        <div style="height: 60px;"></div>
+    </section>
+
+    <!-- View: Input -->
+    <section id="view-input" class="view">
+        <div class="result-header">
+            <h2 style="font-size: 1.5rem; margin-bottom: 10px;">鑑定の準備</h2>
+            <p style="font-size: 0.85rem; color: #666;">あなたの情報を入力してください</p>
+        </div>
+        
+        <div class="guide-box">
+            <div class="guide-avatar">🌙</div>
+            <div class="guide-msg">
+                <strong>月乃しずく</strong><br>
+                「はじめまして。あなたの星の流れを読み解くお手伝いをさせてくださいね。」
+            </div>
+        </div>
+
+        <div class="card">
+            <div id="initial-fields">
+                <div class="input-group">
+                    <label class="input-label">お名前（ニックネーム可）</label>
+                    <input type="text" id="user-name" placeholder="例：しずく">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">生年月日</label>
+                    <input type="date" id="user-birth">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">メールアドレス</label>
+                    <input type="email" id="user-email" placeholder="例：sample@example.com">
+                    <p style="font-size: 0.75rem; color: #888; margin-top: 5px;">※鑑定結果のご案内や、開運メッセージをお届けするために使用します。</p>
+                </div>
+            </div>
+            
+            <div id="returning-fields" class="hidden">
+                <p id="welcome-msg" style="font-family: 'Shippori Mincho', serif; font-size: 1.2rem; text-align: center; margin-bottom: 10px;"></p>
+                <p style="text-align: center; font-size: 0.9rem; color: #666; margin-bottom: 20px;">今日はどのテーマで占いますか？</p>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">占いたいテーマ</label>
+                <select id="user-theme">
+                    <option value="今日の運勢">今日の運勢</option>
+                    <option value="本質">自分の本質</option>
+                    <option value="恋愛">恋愛運</option>
+                    <option value="人間関係">人間関係</option>
+                    <option value="仕事">仕事運</option>
+                    <option value="金運">金運</option>
+                    <option value="今月の流れ">今月の流れ</option>
+                </select>
+            </div>
+            <p style="font-size: 0.75rem; color: #888; margin-bottom: 20px;">
+                ※入力された生年月日から九星気学の本命星を出し、今日のタロットカードと組み合わせて鑑定します。
+            </p>
+            <button class="btn" id="submit-btn" onclick="startDiagnosis()">鑑定する</button>
+
+            <div id="edit-info-link" class="hidden" style="text-align: center; margin-top: 15px;">
+                <button class="text-link" onclick="showEditProfile()">登録情報を変更する</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- View: Loading -->
+    <section id="view-loading" class="view" style="display:none; text-align:center; padding-top:100px;">
+        <div class="stars-loading" id="stars-container"></div>
+        <h2 style="font-family: 'Shippori Mincho', serif; color: var(--color-gold);">鑑定中...</h2>
+        <p style="font-size: 0.9rem; color: #888; margin-top: 20px;" id="loading-msg">星の配置を読み解いています</p>
+    </section>
+
+    <!-- View: Result -->
+    <section id="view-result" class="view">
+        <div class="result-header">
+            <h2 style="font-size: 1.6rem; letter-spacing: 0.05em;"><span id="res-name"></span>様の鑑定結果</h2>
+        </div>
+
+        <div class="guide-box">
+            <div class="guide-avatar">🌙</div>
+            <div class="guide-msg">
+                <strong>月乃しずく</strong><br>
+                <span id="res-guide-msg">「鑑定がまとまりました。今のあなたに最も必要なメッセージをお伝えします。」</span>
+            </div>
+        </div>
+
+        <!-- 運勢スコア -->
+        <div class="card" style="text-align: center;">
+            <div class="score-circle">
+                <div class="score-num" id="res-score">88</div>
+                <div class="score-unit">点</div>
+            </div>
+            <p id="res-score-msg" style="font-weight: 600; font-size: 0.95rem; color: var(--color-text-dark);"></p>
+        </div>
+
+        <!-- 九星気学 -->
+        <div class="card">
+            <div class="result-item">
+                <span class="result-label">九星気学｜本命星</span>
+                <div class="result-value" id="res-star">一白水星</div>
+            </div>
+            <div class="result-item">
+                <span class="result-label">あなたの本質タイプ</span>
+                <div class="result-value" id="res-type" style="color: var(--color-gold);">静かな直感を持つ癒しの人</div>
+            </div>
+            <p id="res-star-desc" style="font-size: 0.85rem; color: #666;"></p>
+        </div>
+
+        <!-- タロット -->
+        <div class="card">
+            <div class="result-item">
+                <span class="result-label">今日のタロットメッセージ</span>
+                <div class="tarot-card-display">
+                    <div style="font-size: 0.7rem; color: #999;">TODAY'S CARD</div>
+                    <div class="tarot-name" id="res-tarot-name">THE STAR｜星</div>
+                </div>
+            </div>
+            <p id="res-tarot-msg" style="font-size: 0.9rem; color: var(--color-text-dark); font-weight: 500;"></p>
+        </div>
+
+        <!-- 開運アクション -->
+        <div class="card" style="background: var(--color-lavender);">
+            <div class="result-item">
+                <span class="result-label" style="color: var(--color-accent);">開運アクション</span>
+                <div class="result-value" id="res-action" style="font-size: 1.1rem;">朝、窓を開けて空気を入れ替える</div>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <div style="flex:1; background: #fff; padding: 10px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 0.6rem; color: #999;">ラッキーカラー</div>
+                    <div id="res-color" style="font-weight: 700; font-size: 0.8rem;">ラベンダー</div>
+                </div>
+                <div style="flex:1; background: #fff; padding: 10px; border-radius: 10px; text-align: center;">
+                    <div style="font-size: 0.6rem; color: #999;">ラッキーアイテム</div>
+                    <div id="res-item" style="font-weight: 700; font-size: 0.8rem;">ハンドクリーム</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- カレンダー一部 -->
+        <div class="card">
+            <div class="result-label" style="font-size: 1.05rem; font-weight: 700; color: #b38b4d; margin-bottom: 15px;">今日から3日間の開運メモ</div>
+            <div id="res-calendar" style="margin-top: 10px;">
+                <!-- 3 days snippet -->
+            </div>
+            <p style="font-size: 0.75rem; color: #999; margin-top: 15px; text-align: center;">
+                今月の開運カレンダー完全版は公式LINEで無料配布中です
+            </p>
+        </div>
+
+        <!-- 再鑑定の誘導 -->
+        <div style="text-align: center; margin: 40px 0 20px;">
+            <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">別のテーマでも占ってみますか？</p>
+            <button class="btn btn-outline" style="width: auto; padding: 10px 30px; font-size: 0.9rem;" onclick="navigateTo('view-input'); document.getElementById('submit-btn').innerText='この内容で再鑑定する';">占う内容を変更する</button>
+        </div>
+
+        <!-- Locked Area -->
+        <div class="locked-container">
+            <div class="locked-overlay">
+                <div class="lock-icon">🔒</div>
+                <h3 class="locked-title">ここから先は、あなた専用の詳しい鑑定です</h3>
+                <p style="font-size: 0.8rem; color: #777; text-align: center; max-width: 320px; margin-bottom: 20px; line-height: 1.5;">
+                    公式LINEでは、生年月日からさらに詳しく読み解いた<br>「あなた専用の本質鑑定書」と、<br>今月の動き方・整え方・開運日がわかる<br>「開運カレンダー完全版」を無料でお渡しします。
+                </p>
+            </div>
+            <!-- Ghost content for layout -->
+            <div class="card" style="opacity: 0.1; filter: blur(5px);">
+                <div class="result-label">深掘りメッセージ</div>
+                <div style="height: 100px;"></div>
+            </div>
+            <div class="card" style="opacity: 0.1; filter: blur(5px);">
+                <div class="result-label">才能の活かし方</div>
+                <div style="height: 80px;"></div>
+            </div>
+        </div>
+
+        <!-- LINE CTA -->
+        <div id="line-registration-area" class="line-cta-box">
+            <h3 style="font-family: 'Shippori Mincho', serif; margin-bottom: 10px;">続きは公式LINEで<br>無料で受け取れます</h3>
+            <p id="res-line-cta-desc" style="font-size: 0.8rem; color: #666;">
+                アプリでは簡易鑑定、LINEではあなた専用の<br>詳しい鑑定書としてお届けします。
+            </p>
+
+            <div class="benefit-cards">
+                <div class="benefit-card">
+                    <div class="benefit-icon">📄</div>
+                    <div>
+                        <div class="benefit-title">あなたの本質鑑定書</div>
+                        <div class="benefit-desc">生年月日から九星気学で読み解く、あなた専用の本質・才能・魅力・人間関係のクセ・運を整える行動をお届けします。</div>
+                    </div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📅</div>
+                    <div>
+                        <div class="benefit-title">今月の開運カレンダー完全版</div>
+                        <div class="benefit-desc">動く日・整える日・休む日・金運・ご縁・神社参拝に向く日がわかる、ラッキーカラーや開運アクション付きの保存版カレンダーです。</div>
+                    </div>
+                </div>
+            </div>
+
+            <p style="font-size: 0.8rem; color: var(--color-accent); font-weight: 600; margin-bottom: 15px; line-height: 1.5;">
+                登録後、あなた専用の本質鑑定書をお作りするために、<br>
+                LINEに生年月日を送ってくださいね。
+            </p>
+            
+            <a href="#" id="line-button-url" class="btn line-btn" target="_blank">公式LINEで続きを無料で受け取る</a>
+            
+            <div style="margin-top: 15px;">
+                <button class="text-link" style="color: #999;" onclick="setLineRegistered(true)">すでに登録済みの方はこちら</button>
+            </div>
+        </div>
+
+        <div class="settings-area">
+            <button class="text-link" onclick="showEditProfile(); navigateTo('view-input')">登録情報を変更する</button><br>
+            <button id="show-line-benefit-link" class="text-link hidden" onclick="setLineRegistered(false)">LINE特典の案内を再表示する</button>
+        </div>
+
+        <div class="footer">
+            &copy; 月と星の開運鑑定 / 月乃しずく
+        </div>
+    </section>
+</div>
+
+<script>
+    /* --- Configuration --- */
+    const LINE_URL = "https://lin.ee/zAT2iNg"; // LINE公式アカウントのURL
+    const APP_NAME = "月と星の開運鑑定";
+    const GUIDE_NAME = "月乃しずく";
+
+    /* --- Data Definitions --- */
+    const NINE_STAR_KI = [
+        { name: "一白水星", type: "静かな直感を持つ癒しの人", desc: "感受性が豊かで、人の気持ちを自然に察する力があります。静かな場所で心を整えるほど、本来の魅力が出やすいタイプです。" },
+        { name: "二黒土星", type: "人を育てる包容力の人", desc: "人を支え、育てる力を持つタイプです。焦らず積み重ねることで、信頼と豊かさを育てていけます。" },
+        { name: "三碧木星", type: "新しい流れを生み出す人", desc: "新しい流れを生み出す力があります。思いついたことを小さく行動に移すことで、運が動きやすいタイプです。" },
+        { name: "四緑木星", type: "ご縁をつなぐ調和の人", desc: "人とのご縁や調和を大切にするタイプです。言葉や人間関係を整えることで、自然と運が広がります。" },
+        { name: "五黄土星", type: "現実を動かす中心の人", desc: "現実を動かす強さを持つタイプです。自分の中心を整えることで、周りにも良い影響を与えられます。" },
+        { name: "六白金星", type: "信頼を積み上げる誠実な人", desc: "責任感と信頼を積み上げる力があります。質の良いものや誠実な行動が、運を高める鍵になります。" },
+        { name: "七赤金星", type: "喜びを広げる華やかな人", desc: "楽しさや喜びを広げる力があります。自分が心地よく笑える時間を増やすことで、運が開きやすくなります。" },
+        { name: "八白土星", type: "深く見つめて整える人", desc: "じっくり考え、物事を整える力があります。変化の前に立ち止まる時間を持つことで、次の道が見えやすくなります。" },
+        { name: "九紫火星", type: "魅力と表現力で照らす人", desc: "魅力や表現力で人を惹きつけるタイプです。自分の感性を隠さず表に出すことで、流れが明るくなります。" }
+    ];
+
+    const TAROT_CARDS = [
+        { name: "THE FOOL｜愚者", msg: "自由な心で新しい一歩を踏み出す時。失敗を恐れず、直感に従ってみて。" },
+        { name: "THE MAGICIAN｜魔術師", msg: "あなたには既に準備が整っています。自分の才能を信じて、何かを始めてみて。" },
+        { name: "THE HIGH PRIESTESS｜女教皇", msg: "静かに自分の内側に耳を傾ける日。直感が冴えているので、心の声に従って。" },
+        { name: "THE EMPRESS｜女帝", msg: "豊かさと愛情に包まれる暗示。自分を慈しみ、心地よいものに触れてください。" },
+        { name: "THE EMPEROR｜皇帝", msg: "責任を持って進める力。計画を立てて着実に進むことで、大きな成果が得られます。" },
+        { name: "THE HIEROPHANT｜法王", msg: "伝統や信頼できる人の教えにヒントがあります。落ち着いて調和を大切に。" },
+        { name: "THE LOVERS｜恋人", msg: "ワクワクする選択の時。心が「好き」と感じる方を自信を持って選んで大丈夫。" },
+        { name: "THE CHARIOT｜戦車", msg: "勢いよく進むべきタイミング。多少の困難も、あなたの強い意志で乗り越えられます。" },
+        { name: "STRENGTH｜力", msg: "優しさと忍耐が最大の武器になります。無理に抑え込まず、穏やかに対応を。" },
+        { name: "THE HERMIT｜隠者", msg: "一人の時間を大切に。深く見つめ直すことで、進むべき光が見えてきます。" },
+        { name: "WHEEL OF FORTUNE｜運命の輪", msg: "チャンスの波が来ています。変化を恐れず、思い切って流れに乗ってみて。" },
+        { name: "JUSTICE｜正義", msg: "冷静な判断が吉。感情に流されず、バランスを保つことで納得のいく答えが出ます。" },
+        { name: "THE HANGED MAN｜視点を変える", msg: "視点を変えてみることで気づきがある時。今は「待つ」ことも大切です。" },
+        { name: "DEATH｜再生", msg: "今は一区切りがつき、新しい流れが始まるタイミングです。手放すことで、より良いエネルギーが入ってきます。" },
+        { name: "TEMPERANCE｜節制", msg: "バランスと調和が整う日。心身ともに無理をせず、穏やかな時間を過ごして。" },
+        { name: "THE DEVIL｜誘惑と気づき", msg: "執着を手放すチャンス。本当に自分を幸せにするものは何か、見直してみて。" },
+        { name: "THE TOWER｜見直し", msg: "予期せぬ変化は、より良い土台を作るため。古い殻を破り、身軽になりましょう。" },
+        { name: "THE STAR｜星", msg: "希望の光が見えてきます。あなたの願いは聞き届けられ、明るい未来が待っています。" },
+        { name: "THE MOON｜月", msg: "見えない不安に惑わされないで。今は霧の中にいますが、やがて夜は明けます。" },
+        { name: "THE SUN｜太陽", msg: "最高の運気！明るく元気に過ごすことで、周りにも幸せが広がっていきます。" },
+        { name: "JUDGEMENT｜審判", msg: "再起と目覚めの時。過去の努力が報われたり、大切なことに気づける暗示です。" },
+        { name: "THE WORLD｜世界", msg: "一つの完成と調和。今のあなたは完璧です。満たされた気持ちを大切に。" }
+    ];
+
+    const LUCK_ACTIONS = [
+        "朝、窓を開けて空気を入れ替える",
+        "近くの神社や自然のある場所に立ち寄る",
+        "使っていないものを1つ手放す",
+        "白いものを身につける",
+        "温かい飲み物をゆっくり飲む",
+        "気になっていた人に短い連絡をする",
+        "玄関を整える",
+        "財布の中を整理する",
+        "夜はスマホを少し早めに置く",
+        "鏡をピカピカに磨く"
+    ];
+
+    const CALENDAR_EVENTS = [
+        "整える日：身の回りを片づけると、気持ちの流れが整いやすい日です。",
+        "人と会う日：ご縁が広がりやすい日。気になる人に連絡してみるのもおすすめです。",
+        "神社参拝に向く日：心を静かに整える時間を持つと、必要な気づきが入りやすい日です。",
+        "休む日：無理をせず、自分を労わる時間を。休息が次の運気を呼び込みます。",
+        "始める日：新しいことを小さく始めるのに最適。前向きな一歩が実を結びます。",
+        "金運を整える日：お金の通り道をきれいに。お財布の整理や感謝の支払いが吉。"
+    ];
+
+    const LUCK_COLORS = ["ホワイト", "パステルラベンダー", "ゴールド", "サクラピンク", "生成り", "ミントグリーン", "シャンパンベージュ"];
+    const LUCK_ITEMS = ["ハンドクリーム", "新しい手帳", "お気に入りのマグカップ", "繊細なアクセサリー", "小さなお守り", "白いハンカチ", "月モチーフの小物", "ラベンダーの香り", "良い香りのミスト"];
+
+    /* --- Navigation --- */
+    function navigateTo(viewId) {
+        document.querySelectorAll('.view').forEach(v => {
+            v.classList.remove('active');
+            v.style.display = 'none';
+        });
+        const target = document.getElementById(viewId);
+        target.style.display = 'block';
+        setTimeout(() => target.classList.add('active'), 10);
+        window.scrollTo(0, 0);
+    }
+
+    /* --- Logic --- */
+
+    let isEditMode = false;
+
+    // Load User Data
+    function initApp() {
+        const savedName = localStorage.getItem('uranai_userName');
+        const savedBirth = localStorage.getItem('uranai_userBirth');
+        const savedEmail = localStorage.getItem('uranai_userEmail');
+        const lineRegistered = localStorage.getItem('uranai_lineRegistered') === 'true';
+
+        if (savedName && savedBirth && savedEmail) {
+            document.getElementById('user-name').value = savedName;
+            document.getElementById('user-birth').value = savedBirth;
+            document.getElementById('user-email').value = savedEmail;
+            showReturningView(savedName);
+        } else {
+            showInitialView();
+            if (savedName) document.getElementById('user-name').value = savedName;
+            if (savedBirth) document.getElementById('user-birth').value = savedBirth;
+            if (savedEmail) document.getElementById('user-email').value = savedEmail;
+        }
+
+        if (lineRegistered) {
+            document.getElementById('line-registration-area').classList.add('hidden');
+            document.getElementById('show-line-benefit-link').classList.remove('hidden');
+        } else {
+            document.getElementById('line-registration-area').classList.remove('hidden');
+            document.getElementById('show-line-benefit-link').classList.add('hidden');
+        }
+    }
+
+    function showInitialView() {
+        isEditMode = false;
+        document.getElementById('initial-fields').classList.remove('hidden');
+        document.getElementById('returning-fields').classList.add('hidden');
+        document.getElementById('edit-info-link').classList.add('hidden');
+        document.getElementById('submit-btn').innerText = "鑑定する";
+    }
+
+    function showReturningView(name) {
+        isEditMode = false;
+        document.getElementById('initial-fields').classList.add('hidden');
+        document.getElementById('returning-fields').classList.remove('hidden');
+        document.getElementById('welcome-msg').innerText = `おかえりなさい、${name}さん`;
+        document.getElementById('edit-info-link').classList.remove('hidden');
+        // デフォルトは「鑑定する」だが、結果画面からの遷移時は「この内容で再鑑定する」に動的に書き換えられる
+        document.getElementById('submit-btn').innerText = "鑑定する";
+    }
+
+    function showEditProfile() {
+        isEditMode = true;
+        document.getElementById('initial-fields').classList.remove('hidden');
+        document.getElementById('returning-fields').classList.add('hidden');
+        document.getElementById('edit-info-link').classList.add('hidden');
+        document.getElementById('submit-btn').innerText = "保存して鑑定する";
+    }
+
+    function setLineRegistered(bool) {
+        localStorage.setItem('uranai_lineRegistered', bool);
+        if (bool) {
+            document.getElementById('line-registration-area').classList.add('hidden');
+            document.getElementById('show-line-benefit-link').classList.remove('hidden');
+            alert("案内を非表示にしました。設定からいつでも再表示できます。");
+        } else {
+            document.getElementById('line-registration-area').classList.remove('hidden');
+            document.getElementById('show-line-benefit-link').classList.add('hidden');
+            alert("LINE特典の案内を再表示しました。");
+        }
+    }
+
+    // Loading Stars
+    function initLoadingAnimation() {
+        const container = document.getElementById('stars-container');
+        container.innerHTML = '';
+        for (let i = 0; i < 8; i++) {
+            const star = document.createElement('div');
+            star.className = 'star-dot';
+            const angle = (i / 8) * Math.PI * 2;
+            const x = 36 + Math.cos(angle) * 30;
+            const y = 36 + Math.sin(angle) * 30;
+            star.style.left = x + 'px';
+            star.style.top = y + 'px';
+            star.style.animationDelay = (i * 0.2) + 's';
+            container.appendChild(star);
+        }
+    }
+
+    function calculateNineStarKi(birthDate) {
+        const date = new Date(birthDate);
+        let year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+
+        // 節分（2月4日付近）の簡易判定
+        if (month < 2 || (month === 2 && day < 4)) {
+            year -= 1;
+        }
+
+        // 本命星の計算 (11 - (year sum % 9))
+        let yearSum = String(year).split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+        while (yearSum > 9) {
+            yearSum = String(yearSum).split('').reduce((a, b) => parseInt(a) + parseInt(b), 0);
+        }
+        
+        let starIndex = 11 - yearSum;
+        while (starIndex > 9) starIndex -= 9;
+        while (starIndex < 1) starIndex += 9;
+        
+        // NINE_STAR_KIは0-indexedなので -1
+        return NINE_STAR_KI[starIndex - 1];
+    }
+
+    function getDailySeed(name, theme) {
+        const today = new Date().toISOString().slice(0, 10);
+        const str = name + theme + today;
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = ((hash << 5) - hash) + str.charCodeAt(i);
+            hash |= 0;
+        }
+        return Math.abs(hash);
+    }
+
+    function startDiagnosis() {
+        const name = document.getElementById('user-name').value || "あなた";
+        const birth = document.getElementById('user-birth').value;
+        const email = document.getElementById('user-email').value.trim();
+        
+        if (!birth) {
+            alert("生年月日を入力してください");
+            return;
+        }
+        
+        if (!email) {
+            alert("メールアドレスを入力してください");
+            return;
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert("正しいメールアドレスを入力してください");
+            return;
+        }
+
+        // Save to localStorage
+        localStorage.setItem('uranai_userName', name);
+        localStorage.setItem('uranai_userBirth', birth);
+        localStorage.setItem('uranai_userEmail', email);
+
+        navigateTo('view-loading');
+        initLoadingAnimation();
+
+        // Simulate processing
+        const msgs = ["星の配置を読み解いています...", "運命のカードを選んでいます...", "月乃しずくがメッセージを綴っています..."];
+        let msgIdx = 0;
+        const interval = setInterval(() => {
+            msgIdx++;
+            if (msgIdx < msgs.length) {
+                document.getElementById('loading-msg').innerText = msgs[msgIdx];
+            }
+        }, 1000);
+
+        setTimeout(() => {
+            clearInterval(interval);
+            generateResult(name, birth);
+            navigateTo('view-result');
+        }, 3000);
+    }
+
+    const THEME_SPECIFIC_DATA = {
+        "恋愛": {
+            guide: "愛し愛される心地よい関係を築くために、今のあなたの心の整え方を読み解きました。",
+            msg: "心のゆとりが、素敵なご縁を引き寄せる鍵となります。自分を愛でる時間を大切に。",
+            action: "お気に入りの香りを身にまとう",
+            color: "ローズピンク",
+            item: "アクセサリーケース",
+            cta: "恋愛・ご縁の流れも含めた詳しい鑑定を、公式LINEで無料で受け取れます。"
+        },
+        "仕事": {
+            guide: "あなたの持つ力を最大限に発揮し、楽しみながら成果を出すためのアドバイスです。",
+            msg: "着実に信頼を積み上げられる時。小さな約束を守ることが、大きな成果への近道です。",
+            action: "デスク周りをきれいに整える",
+            color: "ロイヤルブルー",
+            item: "高級感のあるペン",
+            cta: "仕事運や今月の動き方を、公式LINEで詳しくお届けします。"
+        },
+        "金運": {
+            guide: "豊かさの流れを整え、日々の生活にさらなる福を呼び込むアクションを導き出しました。",
+            msg: "お金はエネルギー。感謝して使い、感謝して受け取ることで、豊かな循環が始まります。",
+            action: "お財布の中のレシートを整理する",
+            color: "シャンパンゴールド",
+            item: "コインケース",
+            cta: "金運の整え方と開運日を、公式LINEで詳しくお届けします。"
+        },
+        "人間関係": {
+            guide: "周囲との調和を保ちつつ、あなたがあなたらしくいられるための秘訣をお伝えします。",
+            msg: "丁寧な言葉選びが、周囲との心の距離を縮めます。まずは身近な人への感謝から。",
+            action: "丁寧な言葉遣いを心がける",
+            color: "ソフトグリーン",
+            item: "便箋・封筒セット",
+            cta: "対人関係のクセや調和の保ち方を、公式LINEで詳しく読み解きます。"
+        },
+        "本質": {
+            guide: "あなた自身もまだ気づいていない、内面に眠る素晴らしい輝きと才能についてお伝えします。",
+            msg: "あなたは唯一無二の存在。自分の感性を信じて、隠さず表に出すことで道が開けます。",
+            action: "鏡を見て自分に笑顔を向ける",
+            color: "ホワイト",
+            item: "ハンドミラー",
+            cta: "あなたの本質鑑定書を、公式LINEで無料でお渡しします。"
+        },
+        "今月の流れ": {
+            guide: "この一ヶ月を最高のものにするために、意識すべきエネルギーの流れをお伝えします。",
+            msg: "今月は「準備」がキーワード。焦らず土台を固めることで、次の飛躍に繋がります。",
+            action: "今月の目標を紙に書き出す",
+            color: "パステルラベンダー",
+            item: "手帳",
+            cta: "今月の開運カレンダー完全版を、公式LINEで無料でお渡しします。"
+        },
+        "今日の運勢": {
+            guide: "今日という一日を、より心地よく、あなたらしく過ごすためのヒントを読み解きました。",
+            msg: "今日は、焦らず整えることで流れが良くなる日です。身近な幸せに目を向けて。",
+            action: "朝、窓を開けて空気を入れ替える",
+            color: "生成り",
+            item: "白いハンカチ",
+            cta: "明日以降の運勢や、より詳しい日々の開運アクションをLINEでお届けします。"
+        }
+    };
+
+    function generateResult(name, birth) {
+        const theme = document.getElementById('user-theme').value;
+        const seed = getDailySeed(name, theme);
+        
+        // 1. Nine Star Ki
+        const starData = calculateNineStarKi(birth);
+        
+        // 2. Tarot
+        const tarotIdx = seed % TAROT_CARDS.length;
+        const tarot = TAROT_CARDS[tarotIdx];
+
+        // 3. Theme specific data
+        const tData = THEME_SPECIFIC_DATA[theme] || THEME_SPECIFIC_DATA["今日の運勢"];
+
+        // 4. Score (68-100)
+        const score = 68 + (seed % 33);
+        let scoreMsg = tData.msg;
+
+        // 5. Luck elements (Combine theme with variety)
+        const action = tData.action;
+        const color = tData.color;
+        const item = tData.item;
+
+        // 6. Theme specific guide message
+        const themeGuideMsg = `「${tData.guide}」`;
+        const lineCtaDesc = tData.cta;
+
+        // 7. Calendar (3 days) - Global logic based on date only
+        const todayStr = new Date().toISOString().slice(0, 10);
+        let dateHash = 0;
+        for (let i = 0; i < todayStr.length; i++) {
+            dateHash = ((dateHash << 5) - dateHash) + todayStr.charCodeAt(i);
+            dateHash |= 0;
+        }
+        const calendarSeed = Math.abs(dateHash);
+
+        const calendarHtml = [0, 1, 2].map(i => {
+            const d = new Date();
+            d.setDate(d.getDate() + i);
+            const eventText = CALENDAR_EVENTS[(calendarSeed + i) % CALENDAR_EVENTS.length];
+            const parts = eventText.split('：');
+            const eventTitle = parts[0];
+            const eventDesc = parts.slice(1).join('：');
+            return `<div style="margin-bottom:10px; padding-bottom:10px; border-bottom:1px dashed #eee;">
+                        <div style="font-weight:700; color:var(--color-gold); margin-bottom: 2px;">${d.getDate()}日：${eventTitle}</div>
+                        <div style="font-size:0.85rem; color: var(--color-text-dark); line-height: 1.4;">${eventDesc}</div>
+                    </div>`;
+        }).join('');
+
+        // Set Values
+        document.getElementById('res-name').innerText = name;
+        document.getElementById('res-score').innerText = score;
+        document.getElementById('res-score-msg').innerText = scoreMsg;
+        document.getElementById('res-star').innerText = starData.name;
+        document.getElementById('res-type').innerText = starData.type;
+        document.getElementById('res-star-desc').innerText = starData.desc;
+        document.getElementById('res-tarot-name').innerText = tarot.name;
+        document.getElementById('res-tarot-msg').innerText = tarot.msg;
+        document.getElementById('res-action').innerText = action;
+        document.getElementById('res-color').innerText = color;
+        document.getElementById('res-item').innerText = item;
+        document.getElementById('res-calendar').innerHTML = calendarHtml;
+        document.getElementById('res-guide-msg').innerText = themeGuideMsg;
+        document.getElementById('res-line-cta-desc').innerText = lineCtaDesc;
+
+        // Ensure LINE CTA visibility matches registration state
+        const lineRegistered = localStorage.getItem('uranai_lineRegistered') === 'true';
+        if (lineRegistered) {
+            document.getElementById('line-registration-area').classList.add('hidden');
+        } else {
+            document.getElementById('line-registration-area').classList.remove('hidden');
+        }
+
+        // Set LINE URL
+        document.getElementById('line-button-url').href = LINE_URL;
+
+        // Reset view for next time
+        const savedName = localStorage.getItem('uranai_userName');
+        showReturningView(savedName);
+    }
+
+    // Initialize App
+    window.onload = initApp;
+</script>
+
+</body>
+</html>
