@@ -470,11 +470,6 @@
                     <label class="input-label">生年月日</label>
                     <input type="date" id="user-birth">
                 </div>
-                <div class="input-group">
-                    <label class="input-label">メールアドレス</label>
-                    <input type="email" id="user-email" placeholder="例：sample@example.com">
-                    <p style="font-size: 0.75rem; color: #888; margin-top: 5px;">※鑑定結果のご案内や、開運メッセージをお届けするために使用します。</p>
-                </div>
             </div>
             
             <div id="returning-fields" class="hidden">
@@ -580,12 +575,13 @@
 
         <!-- カレンダー一部 -->
         <div class="card">
-            <div class="result-label" style="font-size: 1.05rem; font-weight: 700; color: #b38b4d; margin-bottom: 15px;">今日から3日間の開運メモ</div>
+            <div class="result-label" style="font-size: 1.05rem; font-weight: 700; color: #b38b4d; margin-bottom: 15px;">今日から3日間の開運行動</div>
             <div id="res-calendar" style="margin-top: 10px;">
                 <!-- 3 days snippet -->
             </div>
-            <p style="font-size: 0.75rem; color: #999; margin-top: 15px; text-align: center;">
-                今月の開運カレンダー完全版は公式LINEで無料配布中です
+            <p style="font-size: 0.85rem; color: var(--color-gold); margin-top: 15px; text-align: center; font-weight: bold; line-height: 1.5;">
+                3日分の続きは、公式LINEで受け取れます。<br>
+                今月の開運カレンダー完全版は、公式LINEで無料配布中です。
             </p>
         </div>
 
@@ -731,6 +727,44 @@
     const LUCK_COLORS = ["ホワイト", "パステルラベンダー", "ゴールド", "サクラピンク", "生成り", "ミントグリーン", "シャンパンベージュ"];
     const LUCK_ITEMS = ["ハンドクリーム", "新しい手帳", "お気に入りのマグカップ", "繊細なアクセサリー", "小さなお守り", "白いハンカチ", "月モチーフの小物", "ラベンダーの香り", "良い香りのミスト"];
 
+    const DAILY_FORTUNE_ACTIONS = {
+        "2026-05-09": { title: "心を落ち着かせる日", text: "深呼吸をして、自分の内側に意識を向けることで、良いインスピレーションが湧きやすい日です。" },
+        "2026-05-10": { title: "整える日", text: "身の回りを整えることで、気持ちの流れが安定しやすい日です。" },
+        "2026-05-11": { title: "ご縁を広げる日", text: "気になる人に連絡をしたり、感謝を伝える行動が開運につながります。" },
+        "2026-05-12": { title: "休息を大切にする日", text: "無理に動くより、心と体を整える時間を持つことで運気が整いやすくなります。" },
+        "2026-05-13": { title: "直感に従う日", text: "ふと感じたことを大切に行動すると、良い流れに乗れる日です。" },
+        "2026-05-14": { title: "学ぶ日", text: "新しい知識を入れたり、本を読むことで運気がアップします。" },
+        "2026-05-15": { title: "感謝を伝える日", text: "周りの人へ「ありがとう」を伝えると、人間関係が良好になります。" },
+        "2026-05-16": { title: "挑戦する日", text: "少し難しいと思うことにあえてチャレンジすると道が開けます。" },
+        "2026-05-17": { title: "自然に触れる日", text: "公園を散歩したり、植物の手入れをするとエネルギーが回復します。" },
+        "2026-05-18": { title: "手放す日", text: "不要なものを処分したり、執着を手放すことで新しい風が入ります。" },
+        "2026-05-19": { title: "自分を労わる日", text: "美味しいものを食べたり、リラックスする時間を長めに取りましょう。" },
+        "2026-05-20": { title: "計画を立てる日", text: "今後の目標ややりたいことをノートに書き出すと、実現に近づきます。" },
+        "2026-05-21": { title: "人と協力する日", text: "自分一人で抱え込まず、周りに頼ることでスムーズに物事が進みます。" },
+        "2026-05-22": { title: "笑顔を心がける日", text: "口角を上げて過ごすことで、幸運が自然と舞い込んでくる日です。" },
+        "2026-05-23": { title: "体を動かす日", text: "ストレッチや軽い運動で汗を流すと、滞っていた運気が巡り始めます。" },
+        "2026-05-24": { title: "芸術に触れる日", text: "音楽を聴いたり美しいものを見ることで、感性が磨かれ運気が上がります。" },
+        "2026-05-25": { title: "言葉に気をつける日", text: "ポジティブな言葉を発することで、自分も周りもハッピーになれる日です。" },
+        "2026-05-26": { title: "過去を振り返る日", text: "これまでの成長を認め、自分を褒めてあげることで自己肯定感が高まります。" },
+        "2026-05-27": { title: "新しいことを始める日", text: "気になっていたことに少しだけ手をつけてみると、大きな進展があります。" },
+        "2026-05-28": { title: "お金の使い方を見直す日", text: "本当に必要なものにお金を使うことで、金運が安定しやすくなります。" },
+        "2026-05-29": { title: "コミュニケーションの日", text: "家族や友人と楽しい会話をすることで、心のエネルギーが満たされます。" },
+        "2026-05-30": { title: "整理整頓の日", text: "部屋の片付けやスマホのデータ整理をすると、頭の中もスッキリします。" },
+        "2026-05-31": { title: "リセットの日", text: "今月の疲れを癒やし、来月に向けて心身をリセットする時間を持ちましょう。" },
+        "2026-06-01": { title: "新しい目標を立てる日", text: "今月の目標をノートに書き出すことで、実現に向けた一歩を踏み出せます。" },
+        "2026-06-02": { title: "感謝を見つける日", text: "日常の小さな幸せに目を向け、感謝の気持ちを持つことで運気がアップします。" },
+        "2026-06-03": { title: "行動を起こす日", text: "迷っていたことに決着をつけ、まずは行動してみることで道が開けます。" },
+        "2026-06-04": { title: "丁寧に過ごす日", text: "食事や家事など、日常の動作を丁寧に行うことで心が落ち着きます。" },
+        "2026-06-05": { title: "人に優しくする日", text: "見返りを求めず、誰かのために行動することで、巡り巡って自分に幸運が返ってきます。" },
+        "2026-06-06": { title: "直感を信じる日", text: "ふと思いついたアイデアが大きな成果につながる日です。メモを取る習慣を。" },
+        "2026-06-07": { title: "休息を大切にする日", text: "無理に動くより、心と体を整える時間を持つことで運気が整いやすくなります。" },
+        "2026-06-08": { title: "ご縁を広げる日", text: "気になる人に連絡をしたり、感謝を伝える行動が開運につながります。" },
+        "2026-06-09": { title: "整える日", text: "身の回りを整えることで、気持ちの流れが安定しやすい日です。" },
+        "2026-06-10": { title: "心を落ち着かせる日", text: "深呼吸をして、自分の内側に意識を向けることで、良いインスピレーションが湧きやすい日です。" }
+    };
+    
+    const FALLBACK_FORTUNE_ACTION = { title: "整える日", text: "身の回りを整えることで、気持ちの流れが安定しやすい日です。" };
+
     /* --- Navigation --- */
     function navigateTo(viewId) {
         document.querySelectorAll('.view').forEach(v => {
@@ -751,19 +785,16 @@
     function initApp() {
         const savedName = localStorage.getItem('uranai_userName');
         const savedBirth = localStorage.getItem('uranai_userBirth');
-        const savedEmail = localStorage.getItem('uranai_userEmail');
         const lineRegistered = localStorage.getItem('uranai_lineRegistered') === 'true';
 
-        if (savedName && savedBirth && savedEmail) {
+        if (savedName && savedBirth) {
             document.getElementById('user-name').value = savedName;
             document.getElementById('user-birth').value = savedBirth;
-            document.getElementById('user-email').value = savedEmail;
             showReturningView(savedName);
         } else {
             showInitialView();
             if (savedName) document.getElementById('user-name').value = savedName;
             if (savedBirth) document.getElementById('user-birth').value = savedBirth;
-            if (savedEmail) document.getElementById('user-email').value = savedEmail;
         }
 
         if (lineRegistered) {
@@ -870,28 +901,15 @@
     function startDiagnosis() {
         const name = document.getElementById('user-name').value || "あなた";
         const birth = document.getElementById('user-birth').value;
-        const email = document.getElementById('user-email').value.trim();
         
         if (!birth) {
             alert("生年月日を入力してください");
-            return;
-        }
-        
-        if (!email) {
-            alert("メールアドレスを入力してください");
-            return;
-        }
-        
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert("正しいメールアドレスを入力してください");
             return;
         }
 
         // Save to localStorage
         localStorage.setItem('uranai_userName', name);
         localStorage.setItem('uranai_userBirth', birth);
-        localStorage.setItem('uranai_userEmail', email);
 
         navigateTo('view-loading');
         initLoadingAnimation();
@@ -1000,24 +1018,20 @@
         const lineCtaDesc = tData.cta;
 
         // 7. Calendar (3 days) - Global logic based on date only
-        const todayStr = new Date().toISOString().slice(0, 10);
-        let dateHash = 0;
-        for (let i = 0; i < todayStr.length; i++) {
-            dateHash = ((dateHash << 5) - dateHash) + todayStr.charCodeAt(i);
-            dateHash |= 0;
-        }
-        const calendarSeed = Math.abs(dateHash);
-
+        const today = new Date();
         const calendarHtml = [0, 1, 2].map(i => {
-            const d = new Date();
-            d.setDate(d.getDate() + i);
-            const eventText = CALENDAR_EVENTS[(calendarSeed + i) % CALENDAR_EVENTS.length];
-            const parts = eventText.split('：');
-            const eventTitle = parts[0];
-            const eventDesc = parts.slice(1).join('：');
+            const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            const dateKey = `${yyyy}-${mm}-${dd}`;
+            const displayDate = `${d.getMonth() + 1}月${d.getDate()}日`;
+            
+            const actionData = DAILY_FORTUNE_ACTIONS[dateKey] || FALLBACK_FORTUNE_ACTION;
+            
             return `<div style="margin-bottom:10px; padding-bottom:10px; border-bottom:1px dashed #eee;">
-                        <div style="font-weight:700; color:var(--color-gold); margin-bottom: 2px;">${d.getDate()}日：${eventTitle}</div>
-                        <div style="font-size:0.85rem; color: var(--color-text-dark); line-height: 1.4;">${eventDesc}</div>
+                        <div style="font-weight:700; color:var(--color-gold); margin-bottom: 2px;">${displayDate}：${actionData.title}</div>
+                        <div style="font-size:0.85rem; color: var(--color-text-dark); line-height: 1.4;">${actionData.text}</div>
                     </div>`;
         }).join('');
 
